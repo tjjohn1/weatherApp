@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+        <script src="lab6.js"
+            type="text/javascript"> 
+        </script>
+        <title>Lab 6: Part I</title>
+        <h1 id="header">Lab 6</h1>
+</head>
+<style>
+  body {
+    background-image: url('images/default.jpg');
+  }
+</style>
+<body onLoad='createTable();
+              ajaxCurrent("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Phoenix");
+              ajaxCurrent("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Paris");
+              selectableCurrent();'>
+<div align="center">
+<p>
+<fieldset>
+  <form action="#">
+    <input type="button" value="Refresh"
+           onclick='refreshRequest("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Phoenix");
+                    refreshRequest("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Paris");
+                    refreshSelect();'/>
+  </form>
+  <div id="refresh" class="refreshRequest"></div>
+</fieldset>
+</p>
+</div>
+</body></html>
