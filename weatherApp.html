@@ -8,7 +8,14 @@
         <title>WeatherApp</title>
         <h1 id="header">Weather App</h1>
 </head>
-<body>
-
+<style>
+    body {
+        background-image: url('images/default.jpg');
+    }
+</style>
+<body onLoad='createTable();
+              ajaxCurrent("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Phoenix");
+              ajaxCurrent("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Paris");
+              selectableCurrent();'>
 </body>
 </html>
