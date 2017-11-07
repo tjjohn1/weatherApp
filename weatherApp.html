@@ -8,26 +8,7 @@
         <title>WeatherApp</title>
         <h1 id="header">Weather App</h1>
 </head>
-<style>
-  body {
-    background-image: url('images/default.jpg');
-  }
-</style>
-<body onLoad='createTable();
-              ajaxCurrent("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Phoenix");
-              ajaxCurrent("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Paris");
-              selectableCurrent();'>
-<div align="center">
-<p>
-<fieldset>
-  <form action="#">
-    <input type="button" value="Refresh"
-           onclick='refreshRequest("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Phoenix");
-                    refreshRequest("http://api.apixu.com/v1/current.json?key=e46ca165aaac44bcb42225157162211&q=Paris");
-                    refreshSelect();'/>
-  </form>
-  <div id="refresh" class="refreshRequest"></div>
-</fieldset>
-</p>
-</div>
-</body></html>
+<body>
+
+</body>
+</html>
