@@ -107,7 +107,7 @@ function showCurrent(request) {
         //forecastB.setAttribute("value", "Forecast");
         forecastB.innerHTML = 'Forecast';
 
-        if(city === "Phoenix"){
+        if(city == "Phoenix"){
             var trPh = document.createElement('tr');
             trPh.setAttribute("id", "trPh");
 
@@ -149,7 +149,7 @@ function showCurrent(request) {
 
             document.getElementById("table").insertBefore(trPh, document.getElementById("table").firstChild);
         }
-        if(city === "Paris"){
+        if(city == "Paris"){
             var trPa  = document.createElement('tr');
             trPa.setAttribute("id", "trPa");
 
@@ -212,5 +212,155 @@ function showCurrent(request) {
  *
  **/
 function selectableRow(request) {
+    if ((request.readyState === 4) &&
+        (request.status === 200)) {
+
+        var trS = document.createElement('tr');
+        trS.setAttribute("id", "trS");
+
+        var td1S = document.createElement('td');
+        var td2S = document.createElement('td');
+        var td3S = document.createElement('td');
+        var td4S = document.createElement('td');
+        var td5S = document.createElement('td');
+        var td6S = document.createElement('td');
+
+        //var text1 = document.createTextNode(cityString);
+        var text2 = document.createTextNode("");
+        var text3 = document.createTextNode("");
+        var text4 = document.createTextNode("");
+        var text5 = document.createTextNode("");
+        var text6 = document.createTextNode("");
+
+        var selectable = document.createElement("SELECT");
+        selectable.setAttribute("id", "selectable");
+        selectable.setAttribute("onchange", 'ajaxCurrentSelect(document.getElementById("selectable").value)');
+
+        var option1 = document.createElement("option");
+        var option2 = document.createElement("option");
+        var option3 = document.createElement("option");
+        var option4 = document.createElement("option");
+        var option5 = document.createElement("option");
+
+        option1.innerHTML = "Chicago";
+        option2.innerHTML = "New York";
+        option3.innerHTML = "Montreal";
+        option4.innerHTML = "Sao Paulo";
+        option5.innerHTML = "London";
+
+        option1.value = "Chicago";
+        option2.value = "New_York";
+        option3.value = "Montreal";
+        option4.value = "Sao_Paulo";
+        option5.value = "London";
+
+        selectable.appendChild(option1);
+        selectable.appendChild(option2);
+        selectable.appendChild(option3);
+        selectable.appendChild(option4);
+        selectable.appendChild(option5);
+
+        forecastB = document.createElement("BUTTON");
+        forecastB.setAttribute("onclick", 'ajaxForecast(document.getElementById("selectable").value)');
+        //forecastB.setAttribute("value", "Forecast");
+        forecastB.innerHTML = 'Forecast';
+
+        td1S.appendChild(selectable);
+        td1S.appendChild(forecastB);
+        td2S.appendChild(text2);
+        td2S.setAttribute("id", "td2S");
+        td3S.appendChild(text3);
+        td3S.setAttribute("id", "td3S");
+        td4S.appendChild(text4);
+        td4S.setAttribute("id", "td4S");
+        td5S.appendChild(text5);
+        td5S.setAttribute("id", "td5S");
+        td6S.appendChild(text6);
+        td6S.setAttribute("id", "td6S");
+
+        trS.appendChild(td1S);
+        trS.appendChild(td2S);
+        trS.appendChild(td3S);
+        trS.appendChild(td4S);
+        trS.appendChild(td5S);
+        trS.appendChild(td6S);
+
+        document.getElementById("table").appendChild(trS);
+    }else if(request.status != 0 && request.status != 200){
+        alert("Unable to Process Request: " + request.status);
+    }
+}
+
+/**
+ * A function to show the current weather data, for the currently
+ * selected city in the third row of the current weather table
+ *
+ * @param request        The AJAX request to APIXU, contains readable returned data
+ **/
+function showCurrentSelect(request) {
+    if ((request.readyState === 4) &&
+        (request.status === 200)) {
+
+        var jsonWeather = JSON.parse(request.responseText);
+
+        var lastUpdatedString = JSON.stringify(jsonWeather.current.last_updated_epoch);
+        var currentTempString = JSON.stringify(jsonWeather.current.temp_f);
+        var currentHumidString = JSON.stringify(jsonWeather.current.humidity);
+        var currentWindString = JSON.stringify(jsonWeather.current.wind_mph);
+        var currentCondString = JSON.stringify(jsonWeather.current.condition.text);
+
+        var lastUpdatedInt = parseInt(lastUpdatedString);
+        var updatedDate = new Date(0);
+        updatedDate.setUTCSeconds(lastUpdatedInt);
+        var lastUpdated = updatedDate.toDateString() + " " + updatedDate.toTimeString();
+        var n = lastUpdated.indexOf("G");
+        var tempString = lastUpdated.slice(n, lastUpdated.length);
+        lastUpdated = lastUpdated.replace(tempString, "");
+
+        var trS = document.getElementById("trS");
+
+        var td2SNew = document.createElement('td');
+        var td3SNew = document.createElement('td');
+        var td4SNew = document.createElement('td');
+        var td5SNew = document.createElement('td');
+        var td6SNew = document.createElement('td');
+
+        var text2 = document.createTextNode(lastUpdated);
+        var text3 = document.createTextNode(currentTempString);
+        var text4 = document.createTextNode(currentHumidString);
+        var text5 = document.createTextNode(currentWindString);
+        var text6 = document.createTextNode(currentCondString);
+
+        td2SNew.appendChild(text2);
+        td2SNew.setAttribute("id", "td2S");
+        td3SNew.appendChild(text3);
+        td3SNew.setAttribute("id", "td3S");
+        td4SNew.appendChild(text4);
+        td4SNew.setAttribute("id", "td4S");
+        td5SNew.appendChild(text5);
+        td5SNew.setAttribute("id", "td5S");
+        td6SNew.appendChild(text6);
+        td6SNew.setAttribute("id", "td6S");
+
+        trS.replaceChild(td2SNew, td2S);
+        trS.replaceChild(td3SNew, td3S);
+        trS.replaceChild(td4SNew, td4S);
+        trS.replaceChild(td5SNew, td5S);
+        trS.replaceChild(td6SNew, td6S);
+
+        document.getElementById("table").appendChild(trS);
+
+        headerDisplay();
+    }else if(request.status != 0 && request.status != 200){
+        alert("Unable to Process Request: " + request.status);
+    }
+}
+
+/**
+ * A function to display the header data for the average temperature, the hottest city
+ * and the nicest city
+ *
+ **/
+function headerDisplay(){
 
 }
